@@ -13,10 +13,40 @@
       return $obj->result_array();
 		}
 
+		function get_wisata($kd){
+      $obj = $this->db->select('*')
+					->where('tb_tempat_wisata.id_kota',$kd)
+          ->get('tb_tempat_wisata');
+      return $obj->result_array();
+		}
+
+		function get_kuliner($kd){
+      $obj = $this->db->select('*')
+					->where('tb_tempat_kuliner.id_kota',$kd)
+          ->get('tb_tempat_kuliner');
+      return $obj->result_array();
+		}
+
     function detail_kota($kd){
       $obj = $this->db->select('*')
           ->where('id_kota',$kd)
           ->get('tb_kota');
+      return $obj->result_array();
+    }
+
+		function detail_wisata($kd, $idw){
+      $obj = $this->db->select('*')
+          ->where('id_kota',$kd)
+					->where('id_tempat_wisata',$idw)
+          ->get('tb_tempat_wisata');
+      return $obj->result_array();
+    }
+
+		function detail_kuliner($kd, $idk){
+      $obj = $this->db->select('*')
+          ->where('id_kota',$kd)
+					->where('id_tempat_kuliner',$idk)
+          ->get('tb_tempat_kuliner');
       return $obj->result_array();
     }
 

@@ -27,6 +27,15 @@ class Welcome extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
+	function login(){
+		$session = $this->session->userdata('isLogin'); //mengabil dari session apakah sudah login atau belum
+		if($session == FALSE) {//jika session false maka akan menampilkan halaman login
+				$data=array('title'=>'Login Administrator',
+				'isi' =>'login_view');
+				$this->load->view('login_view',$data);
+		}
+	}
+
 	function get_kota(){
 		$query = $this->Pantura_model->get_kota();
 		$response = array();
@@ -77,9 +86,126 @@ class Welcome extends CI_Controller {
 		}
 	}
 
+	function get_wisata(){
+		if($this->input->get('id_kota')){
+			$kd=$this->input->get('id_kota');
+		}
+		$query = $this->Pantura_model->get_wisata($kd);
+		$response = array();
+		$cek = $query;
+		if($cek > 0){
+			$response["wisata"]	=array();
+			foreach ($query as $row) {
+				$data=array();
+				$data["id_wisata"]		=	$row["id_tempat_wisata"];
+				$data["id_kota"]		=	$row["id_kota"];
+				$data["nama_tempat"]	=	$row["nama_tempat"];
+				// $data["deskripsi"]	=	$row["deskripsi"];
+				$data["gambar"]	=	$row["gambar"];
+				// $data["langi"]	=	$row["langitude"];
+				// $data["longi"]	=	$row["longitude"];
+				array_push($response["wisata"], $data);
+			}
+			$response["success"]	= 1;
+			$response["message"]	= "Semua data wisata";
+			echo json_encode($response);
+		} else {
+			$response["success"]	= 0;
+			$response["message"]	= "Data kota wisata";
+			echo json_encode($response);
+		}
+	}
 
-	public function test_user_exist($name,$email,$password){
-		return $this->Pantura_model->store_user_2($name, $email, $password);
+	function get_kuliner(){
+		if($this->input->get('id_kota')){
+			$kd=$this->input->get('id_kota');
+		}
+		$query = $this->Pantura_model->get_kuliner($kd);
+		$response = array();
+		$cek = $query;
+		if($cek > 0){
+			$response["kuliner"]	=array();
+			foreach ($query as $row) {
+				$data=array();
+				$data["id_kuliner"]		=	$row["id_tempat_kuliner"];
+				$data["id_kota"]		=	$row["id_kota"];
+				$data["nama_tempat"]	=	$row["nama_tempat"];
+				// $data["deskripsi"]	=	$row["deskripsi"];
+				$data["gambar"]	=	$row["gambar"];
+				// $data["langi"]	=	$row["langitude"];
+				// $data["longi"]	=	$row["longitude"];
+				array_push($response["kuliner"], $data);
+			}
+			$response["success"]	= 1;
+			$response["message"]	= "Semua data wisata";
+			echo json_encode($response);
+		} else {
+			$response["success"]	= 0;
+			$response["message"]	= "Data kota wisata";
+			echo json_encode($response);
+		}
+	}
+
+	function detail_wisata(){
+		if($this->input->get('id_kota') && $this->input->get('id_wisata')){
+			$kd=$this->input->get('id_kota');
+			$idw=$this->input->get('id_kota');
+		}
+		$query = $this->Pantura_model->detail_wisata($kd,$idw);
+		$response = array();
+		$cek = $query;
+		if($cek > 0){
+			$response["wisata"]	=array();
+			foreach ($query as $row) {
+				$data=array();
+				$data["id_wisata"]		=	$row["id_tempat_wisata"];
+				$data["id_kota"]		=	$row["id_kota"];
+				$data["nama_tempat"]	=	$row["nama_tempat"];
+				$data["deskripsi"]	=	$row["deskripsi"];
+				$data["gambar"]	=	$row["gambar"];
+				$data["langi"]	=	$row["langitude"];
+				$data["longi"]	=	$row["longitude"];
+				array_push($response["wisata"], $data);
+			}
+			$response["success"]	= 1;
+			$response["message"]	= "Semua data wisata";
+			echo json_encode($response);
+		} else {
+			$response["success"]	= 0;
+			$response["message"]	= "Data kota gagal";
+			echo json_encode($response);
+		}
+	}
+
+	function detail_kuliner(){
+		if($this->input->get('id_kota') && $this->input->get('id_kuliner')){
+			$kd=$this->input->get('id_kota');
+			$idk=$this->input->get('id_kota');
+		}
+		$query = $this->Pantura_model->detail_kuliner($kd,$idk);
+		$response = array();
+		$cek = $query;
+		if($cek > 0){
+			$response["kuliner"]	=array();
+			foreach ($query as $row) {
+				$data=array();
+				$data["id_kuliner"]		=	$row["id_tempat_kuliner"];
+				$data["id_kota"]		=	$row["id_kota"];
+				$data["nama_tempat"]	=	$row["nama_tempat"];
+				$data["deskripsi"]	=	$row["deskripsi"];
+				$data["gambar"]	=	$row["gambar"];
+				$data["langi"]	=	$row["langitude"];
+				$data["longi"]	=	$row["longitude"];
+				array_push($response["kuliner"], $data);
+			}
+			$response["success"]	= 1;
+			$response["message"]	= "Semua data kuliner";
+			echo json_encode($response);
+		} else {
+			$response["success"]	= 0;
+			$response["message"]	= "Data kuliner gagal";
+			echo json_encode($response);
+		}
 	}
 
 	public function registration_endpoint() {

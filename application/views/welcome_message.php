@@ -51,12 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <!-- <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="#about">About</a>
+                        <a class="page-scroll" href="<?php echo base_url();?>Welcome/login">Login</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="page-scroll" href="#services">Services</a>
                     </li>
                     <li>
@@ -64,9 +64,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
-                    </li>
+                    </li> -->
                 </ul>
-            </div> -->
+            </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
