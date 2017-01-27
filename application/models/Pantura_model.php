@@ -50,9 +50,101 @@
       return $obj->result_array();
     }
 
+		function get_feedback_wisata($wd, $idw){
+      $obj = $this->db->select('*')
+					->join('tb_user','tb_user.id_user = feedback_tempat_wisata.id_user')
+          ->where('id_kota',$wd)
+					->where('id_tempat_wisata',$idw)
+          ->get('feedback_tempat_wisata');
+      return $obj->result_array();
+    }
+
+function get_feedback_kuliner($kd, $idk){
+      $obj = $this->db->select('*')
+					->join('tb_user','tb_user.id_user = feedback_tempat_kuliner.id_user')
+          ->where('id_kota',$kd)
+					->where('id_tempat_kuliner',$idk)
+          ->get('feedback_tempat_kuliner');
+      return $obj->result_array();
+    }
+
     function store_user($data){
       return $this->db->insert('tb_user', $data);
     }
+
+    function store_comment_wisata($data){
+      return $this->db->insert('feedback_tempat_wisata', $data);
+    }
+
+    function store_comment_kuliner($data){
+      return $this->db->insert('feedback_tempat_kuliner', $data);
+    }
+
+		function input_kota($data){
+      return $this->db->insert('tb_kota', $data);
+    }
+
+		function input_wisata($data){
+      return $this->db->insert('tb_tempat_wisata', $data);
+    }
+
+		function input_kuliner($data){
+      return $this->db->insert('tb_tempat_kuliner', $data);
+    }
+
+		function edit_kota($data) {
+			$this->db->where('id_kota', $data['id_kota']);
+			return $this->db->update('tb_kota', $data);
+		}
+
+		function edit_tempat_wisata($data) {
+			$this->db->where('id_kota', $data['id_kota'])
+							 ->where('id_tempat_wisata', $data['id_tempat_wisata']);
+			return $this->db->update('tb_tempat_wisata', $data);
+		}
+
+		function edit_tempat_kuliner($data) {
+			$this->db->where('id_kota', $data['id_kota'])
+							 ->where('id_tempat_kuliner', $data['id_tempat_kuliner']);
+			return $this->db->update('tb_tempat_kuliner', $data);
+		}
+
+		public function delete_comment_wisata($data) {
+			$this->db->where('id_user',$data['id_user'])
+							 ->where('id_tempat_wisata', $data['id_tempat_wisata'])
+							 ->where('id_feedback_tw', $data['id_feedback_tw']);
+			return $this->db->delete('feedback_tempat_wisata');
+		}
+
+		public function delete_comment_kuliner($data) {
+			$this->db->where('id_user',$data['id_user'])
+							 ->where('id_tempat_kuliner', $data['id_tempat_kuliner'])
+							 ->where('id_feedback_tk', $data['id_feedback_tk']);
+			return $this->db->delete('feedback_tempat_kuliner');
+		}
+
+		public function delete_kota($data) {
+			$this->db->where('id_kota',$data['id_kota']);
+			return $this->db->delete('tb_kota');
+		}
+
+
+		public function delete_kuliner($data) {
+			$this->db->where('id_kota',$data['id_kota']);
+			$this->db->where('id_tempat_kuliner',$data['id_kuliner']);
+			return $this->db->delete('tb_tempat_kuliner');
+		}
+
+		public function delete_wisata($data) {
+			$this->db->where('id_kota',$data['id_kota']);
+			$this->db->where('id_tempat_wisata',$data['id_wisata']);
+			return $this->db->delete('tb_tempat_wisata');
+		}
+
+
+		/**
+		* User Query
+		**/
 
     function get_individual_user($data){
       $obj = $this->db->select('*')
@@ -87,6 +179,7 @@
 	   * @param salt, password
 	   * returns hash string
 	   */
+
 	  public function checkhashSSHA($salt, $password) {
 
 	      $hash = base64_encode(sha1($password . $salt, true) . $salt);
@@ -129,6 +222,42 @@
 				//echo 'false';
 				return false;
 			}
+		}
+
+		//fungsi CRUD
+		function data_view_kota(){
+			return $this->db->get('tb_kota');
+		}
+		
+		function data_view_wisata(){
+			return $this->db->get('tb_tempat_wisata');
+		}
+		
+		function data_view_kuliner(){
+			return $this->db->get('tb_tempat_kuliner');
+		}
+		
+		function input_data($data, $table){
+			$this->db->insert($table, $data);
+		}
+		
+		function hapus_data($where, $table){
+			$this->db->where($where);
+			$this->db->delete($table);
+		}
+		
+		function edit_data($where, $table){
+			return $this->db->get_where($table, $where);
+		}
+		
+		function update_data($where, $data, $table){
+			$this->db->where($where);
+			$this->db->update($table, $data);
+		}
+		
+		//fungsi Login
+		function cek_login($table, $where){
+			return $this->db->get_where($table, $where);
 		}
 
 
